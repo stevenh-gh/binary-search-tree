@@ -49,6 +49,26 @@ class Tree
     find_helper temp, val
   end
 
+  def level_order
+    queue = [root]
+
+    values = []
+
+    until queue.empty?
+
+      node = queue.shift
+
+      values << node.value
+
+      queue << node.left unless node.left.nil?
+
+      queue << node.right unless node.right.nil?
+
+    end
+
+    values
+  end
+
   # Provided at https://www.theodinproject.com/courses/ruby-programming/lessons/binary-search-trees
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
@@ -84,6 +104,8 @@ t.insert 10_000
 
 t.pretty_print
 
-p t.find 7000
-p t.find 324
-p t.find 9_000_000
+# p t.find 7000
+# p t.find 324
+# p t.find 9_000_000
+
+p t.level_order
