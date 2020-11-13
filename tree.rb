@@ -85,15 +85,7 @@ class Tree
 
     return node if node.value == value
 
-    if value > node.value
-
-      find_helper node.right, value
-
-    else
-
-      find_helper node.left, value
-
-    end
+    value > node.value ? find_helper(node.right, value) : find_helper(node.left, value)
   end
 end
 
@@ -104,8 +96,8 @@ t.insert 10_000
 
 t.pretty_print
 
-# p t.find 7000
-# p t.find 324
-# p t.find 9_000_000
+p t.find 7000
+p t.find 324
+p t.find 9_000_000
 
 p t.level_order
