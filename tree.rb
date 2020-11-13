@@ -23,6 +23,26 @@ class Tree
     root_node
   end
 
+  def insert(value)
+    new_node = Node.new value
+
+    temp = root
+
+    loop do
+      break if new_node == temp
+
+      if new_node > temp
+        (temp.right = new_node; break) if temp.right.nil?
+
+        temp = temp.right
+      else
+        (temp.left = new_node; break) if temp.left.nil?
+
+        temp = temp.left
+      end
+    end
+  end
+
   # Provided at https://www.theodinproject.com/courses/ruby-programming/lessons/binary-search-trees
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
@@ -34,5 +54,8 @@ class Tree
 end
 
 t = Tree.new([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 7000, 7000])
-p t.sorted_array
+t.insert 10_000
+t.insert 2
+t.insert 10_000
+
 t.pretty_print
