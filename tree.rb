@@ -95,6 +95,10 @@ class Tree
     left > right ? left + 1 : right + 1
   end
 
+  def balanced?
+    balance_helper root
+  end
+
   # Provided at https://www.theodinproject.com/courses/ruby-programming/lessons/binary-search-trees
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
@@ -137,12 +141,30 @@ class Tree
 
     node > root ? depth_helper(root.right, node) + 1 : depth_helper(root.left, node) + 1
   end
+
+  def balance_helper(node)
+    node.nil? || (
+
+      balance_helper(node.left) &&
+
+      balance_helper(node.right) &&
+
+      (height(node.left) - height(node.right)).abs < 2
+
+    )
+  end
 end
 
 t = Tree.new [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 7000, 7000]
 t.insert 10_000
 t.insert 2
 t.insert 10_000
+t.insert 6
+t.insert 10
+t.insert 11
+t.insert 12
+t.insert 13
+t.insert 14
 
 t.pretty_print
 
@@ -159,3 +181,5 @@ p t.postorder
 p t.depth t.find 2
 
 p t.height t.find 9
+
+p t.balanced?
