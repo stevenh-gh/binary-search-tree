@@ -99,6 +99,10 @@ class Tree
     balance_helper root
   end
 
+  def rebalance
+    self.root = build_tree level_order
+  end
+
   # Provided at https://www.theodinproject.com/courses/ruby-programming/lessons/binary-search-trees
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
@@ -181,5 +185,11 @@ p t.postorder
 p t.depth t.find 2
 
 p t.height t.find 9
+
+p t.balanced?
+
+t.rebalance
+
+t.pretty_print
 
 p t.balanced?
