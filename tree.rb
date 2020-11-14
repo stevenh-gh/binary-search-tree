@@ -135,15 +135,7 @@ class Tree
   def depth_helper(root, node)
     return 0 if root.nil? || root == node
 
-    if node > root
-
-      depth_helper(root.right, node) + 1
-
-    else
-
-      depth_helper(root.left, node) + 1
-
-    end
+    node > root ? depth_helper(root.right, node) + 1 : depth_helper(root.left, node) + 1
   end
 end
 
