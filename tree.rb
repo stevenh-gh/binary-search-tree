@@ -85,6 +85,16 @@ class Tree
     depth_helper root, node
   end
 
+  def height(node)
+    return 0 if node.nil? || (node.left.nil? && node.right.nil?)
+
+    left = height(node.left)
+
+    right = height(node.right)
+
+    left > right ? left + 1 : right + 1
+  end
+
   # Provided at https://www.theodinproject.com/courses/ruby-programming/lessons/binary-search-trees
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
@@ -154,4 +164,6 @@ p t.inorder
 p t.preorder
 p t.postorder
 
-p t.depth t.find 7
+p t.depth t.find 2
+
+p t.height t.find 9
