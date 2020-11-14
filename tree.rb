@@ -81,6 +81,10 @@ class Tree
     postorder_helper root
   end
 
+  def depth(node) # Length of path from root to node
+    depth_helper root, node
+  end
+
   # Provided at https://www.theodinproject.com/courses/ruby-programming/lessons/binary-search-trees
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
@@ -117,6 +121,20 @@ class Tree
 
     postorder_helper(node.left) + postorder_helper(node.right) + [node.value]
   end
+
+  def depth_helper(root, node)
+    return 0 if root.nil? || root == node
+
+    if node > root
+
+      depth_helper(root.right, node) + 1
+
+    else
+
+      depth_helper(root.left, node) + 1
+
+    end
+  end
 end
 
 t = Tree.new [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 7000, 7000]
@@ -135,3 +153,5 @@ p t.level_order
 p t.inorder
 p t.preorder
 p t.postorder
+
+p t.depth t.find 7
