@@ -69,6 +69,18 @@ class Tree
     values
   end
 
+  def inorder
+    inorder_helper root
+  end
+
+  def preorder
+    preorder_helper root
+  end
+
+  def postorder
+    postorder_helper root
+  end
+
   # Provided at https://www.theodinproject.com/courses/ruby-programming/lessons/binary-search-trees
   def pretty_print(node = @root, prefix = '', is_left = true)
     pretty_print(node.right, "#{prefix}#{is_left ? '│   ' : '    '}", false) if node.right
@@ -87,6 +99,24 @@ class Tree
 
     value > node.value ? find_helper(node.right, value) : find_helper(node.left, value)
   end
+
+  def inorder_helper(node)
+    return [] if node.nil?
+
+    inorder_helper(node.left) + [node.value] + inorder_helper(node.right)
+  end
+
+  def preorder_helper(node)
+    return [] if node.nil?
+
+    [node.value] + preorder_helper(node.left) + preorder_helper(node.right)
+  end
+
+  def postorder_helper(node)
+    return [] if node.nil?
+
+    postorder_helper(node.left) + postorder_helper(node.right) + [node.value]
+  end
 end
 
 t = Tree.new [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 7000, 7000]
@@ -101,3 +131,7 @@ p t.find 324
 p t.find 9_000_000
 
 p t.level_order
+
+p t.inorder
+p t.preorder
+p t.postorder
