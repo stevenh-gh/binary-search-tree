@@ -43,6 +43,22 @@ class Tree
     end
   end
 
+  def delete(node)
+    if node.left.nil? && node.right.nil?
+
+      temp = root
+
+      until temp.nil?
+        (temp.right = nil; break) if temp.right == node
+
+        (temp.left = nil; break) if temp.left == node
+
+        temp = node > temp ? temp.right : temp.left
+      end
+
+    end
+  end
+
   def find(val)
     temp = root
 
@@ -100,7 +116,7 @@ class Tree
   end
 
   def rebalance
-    self.root = build_tree level_order
+    self.root = build_tree level_order.sort
   end
 
   # Provided at https://www.theodinproject.com/courses/ruby-programming/lessons/binary-search-trees
@@ -193,3 +209,7 @@ t.rebalance
 t.pretty_print
 
 p t.balanced?
+
+t.delete t.find 10_000
+
+t.pretty_print
