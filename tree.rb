@@ -1,4 +1,5 @@
 require_relative 'node'
+require 'pry'
 
 class Tree
   attr_accessor :sorted_array, :root
@@ -44,6 +45,8 @@ class Tree
   end
 
   def delete(node)
+    #     binding.pry
+
     if node.left.nil? && node.right.nil?
 
       temp = root
@@ -54,6 +57,39 @@ class Tree
         (temp.left = nil; break) if temp.left == node
 
         temp = node > temp ? temp.right : temp.left
+      end
+
+    end
+
+    if node.left.nil? ^ node.right.nil?
+
+      parent = nil
+
+      current = root
+
+      child = nil
+
+      loop do
+        parent = current
+
+        current = if node > current
+
+                    current.right
+                  else
+
+                    current.left
+
+                  end
+
+        next unless current == node
+
+        child = [current.right, current.left].select { |node| !node.nil? }[0]
+
+        parent.left = child if parent.left == current
+
+        parent.right = child if parent.right == current
+
+        break
       end
 
     end
@@ -206,10 +242,14 @@ p t.balanced?
 
 t.rebalance
 
-t.pretty_print
+# t.pretty_print
 
 p t.balanced?
 
-t.delete t.find 10_000
+# t.delete t.find 10_000
+
+t.pretty_print
+
+t.delete t.find 6345
 
 t.pretty_print
