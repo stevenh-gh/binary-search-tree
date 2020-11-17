@@ -45,7 +45,7 @@ class Tree
   end
 
   def delete(node)
-    #     binding.pry
+    # if node is leaf
 
     if node.left.nil? && node.right.nil?
 
@@ -60,6 +60,8 @@ class Tree
       end
 
     end
+
+    # if node has 1 child
 
     if node.left.nil? ^ node.right.nil?
 
@@ -90,6 +92,82 @@ class Tree
         parent.right = child if parent.right == current
 
         break
+      end
+
+    end
+
+    # If node has 2 children
+
+    # look for the node
+
+    #     binding.pry
+
+    if !node.left.nil? && !node.right.nil?
+
+      delete_node = root
+
+      delete_node_parent = nil
+
+      loop do
+        if delete_node == node
+
+          # get left and right child
+
+          delete_node_left = delete_node.left
+
+          delete_node_right = delete_node.right
+
+          # get inorder successor (down right node and all the way to the left)
+
+          successor = delete_node_right
+
+          # if right child is a not leaf
+
+          if !delete_node_right.right.nil? && !delete_node_right.left.nil?
+
+            successor_parent = nil
+
+            until successor.left.nil?
+
+              successor_parent = successor
+
+              successor = successor.left
+
+            end
+
+            # after getting successor and its parent, set parent left child to nil
+
+            successor_parent.left = nil
+
+          end
+
+          # set successor's left and right child
+
+          successor.left = delete_node_left
+
+          #   successor.right = delete_node_right
+
+          successor.right = delete_node_right == successor ? nil : delete_node_right
+
+          # if node not root, then set parent of node's child to be successor
+
+          unless node == root
+
+            delete_node_parent.left = successor if delete_node_parent.left == node
+
+            delete_node_parent.right = successor if delete_node_parent.right == node
+
+          end
+
+          self.root = successor if node == root
+
+          break
+
+        end
+
+        delete_node_parent = delete_node
+
+        delete_node = node > delete_node ? delete_node.right : delete_node.left
       end
 
     end
@@ -222,7 +300,7 @@ t.insert 12
 t.insert 13
 t.insert 14
 
-t.pretty_print
+# t.pretty_print
 
 p t.find 7000
 p t.find 324
@@ -248,8 +326,12 @@ p t.balanced?
 
 # t.delete t.find 10_000
 
-t.pretty_print
+# t.pretty_print
 
 t.delete t.find 6345
+
+# t.pretty_print
+
+t.delete t.find 9
 
 t.pretty_print
