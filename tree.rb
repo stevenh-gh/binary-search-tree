@@ -1,5 +1,5 @@
-require_relative 'node'
 require 'pry'
+require_relative 'node'
 
 class Tree
   attr_accessor :sorted_array, :root
@@ -53,11 +53,7 @@ class Tree
 
     delete_one_child node if node.left.nil? ^ node.right.nil?
 
-    # If node has 2 children
-
-    # look for the node
-
-    #     binding.pry
+    # if node has 2 children
 
     delete_two_child node if !node.left.nil? && !node.right.nil?
   end
@@ -202,6 +198,7 @@ class Tree
       current = if node > current
 
                   current.right
+
                 else
 
                   current.left
@@ -262,8 +259,6 @@ class Tree
 
         successor.left = delete_node_left
 
-        #   successor.right = delete_node_right
-
         successor.right = delete_node_right == successor ? nil : delete_node_right
 
         # if node not root, then set parent of node's child to be successor
@@ -288,50 +283,3 @@ class Tree
     end
   end
 end
-
-t = Tree.new [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 7000, 7000]
-t.insert 10_000
-t.insert 2
-t.insert 10_000
-t.insert 6
-t.insert 10
-t.insert 11
-t.insert 12
-t.insert 13
-t.insert 14
-
-# t.pretty_print
-
-p t.find 7000
-p t.find 324
-p t.find 9_000_000
-
-p t.level_order
-
-p t.inorder
-p t.preorder
-p t.postorder
-
-p t.depth t.find 2
-
-p t.height t.find 9
-
-p t.balanced?
-
-t.rebalance
-
-# t.pretty_print
-
-p t.balanced?
-
-# t.delete t.find 10_000
-
-# t.pretty_print
-
-t.delete t.find 6345
-
-# t.pretty_print
-
-t.delete t.find 9
-
-t.pretty_print
