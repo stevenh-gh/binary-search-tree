@@ -47,54 +47,11 @@ class Tree
   def delete(node)
     # if node is leaf
 
-    if node.left.nil? && node.right.nil?
-
-      temp = root
-
-      until temp.nil?
-        (temp.right = nil; break) if temp.right == node
-
-        (temp.left = nil; break) if temp.left == node
-
-        temp = node > temp ? temp.right : temp.left
-      end
-
-    end
+    delete_leaf node if node.left.nil? && node.right.nil?
 
     # if node has 1 child
 
-    if node.left.nil? ^ node.right.nil?
-
-      parent = nil
-
-      current = root
-
-      child = nil
-
-      loop do
-        parent = current
-
-        current = if node > current
-
-                    current.right
-                  else
-
-                    current.left
-
-                  end
-
-        next unless current == node
-
-        child = [current.right, current.left].select { |node| !node.nil? }[0]
-
-        parent.left = child if parent.left == current
-
-        parent.right = child if parent.right == current
-
-        break
-      end
-
-    end
+    delete_one_child node if node.left.nil? ^ node.right.nil?
 
     # If node has 2 children
 
@@ -102,75 +59,7 @@ class Tree
 
     #     binding.pry
 
-    if !node.left.nil? && !node.right.nil?
-
-      delete_node = root
-
-      delete_node_parent = nil
-
-      loop do
-        if delete_node == node
-
-          # get left and right child
-
-          delete_node_left = delete_node.left
-
-          delete_node_right = delete_node.right
-
-          # get inorder successor (down right node and all the way to the left)
-
-          successor = delete_node_right
-
-          # if right child is a not leaf
-
-          if !delete_node_right.right.nil? && !delete_node_right.left.nil?
-
-            successor_parent = nil
-
-            until successor.left.nil?
-
-              successor_parent = successor
-
-              successor = successor.left
-
-            end
-
-            # after getting successor and its parent, set parent left child to nil
-
-            successor_parent.left = nil
-
-          end
-
-          # set successor's left and right child
-
-          successor.left = delete_node_left
-
-          #   successor.right = delete_node_right
-
-          successor.right = delete_node_right == successor ? nil : delete_node_right
-
-          # if node not root, then set parent of node's child to be successor
-
-          unless node == root
-
-            delete_node_parent.left = successor if delete_node_parent.left == node
-
-            delete_node_parent.right = successor if delete_node_parent.right == node
-
-          end
-
-          self.root = successor if node == root
-
-          break
-
-        end
-
-        delete_node_parent = delete_node
-
-        delete_node = node > delete_node ? delete_node.right : delete_node.left
-      end
-
-    end
+    delete_two_child node if !node.left.nil? && !node.right.nil?
   end
 
   def find(val)
@@ -286,6 +175,117 @@ class Tree
       (height(node.left) - height(node.right)).abs < 2
 
     )
+  end
+
+  def delete_leaf(node)
+    temp = root
+
+    until temp.nil?
+      (temp.right = nil; break) if temp.right == node
+
+      (temp.left = nil; break) if temp.left == node
+
+      temp = node > temp ? temp.right : temp.left
+    end
+  end
+
+  def delete_one_child(node)
+    parent = nil
+
+    current = root
+
+    child = nil
+
+    loop do
+      parent = current
+
+      current = if node > current
+
+                  current.right
+                else
+
+                  current.left
+
+                end
+
+      next unless current == node
+
+      child = [current.right, current.left].select { |node| !node.nil? }[0]
+
+      parent.left = child if parent.left == current
+
+      parent.right = child if parent.right == current
+
+      break
+    end
+  end
+
+  def delete_two_child(node)
+    delete_node = root
+
+    delete_node_parent = nil
+
+    loop do
+      if delete_node == node
+
+        # get left and right child
+
+        delete_node_left = delete_node.left
+
+        delete_node_right = delete_node.right
+
+        # get inorder successor (down right node and all the way to the left)
+
+        successor = delete_node_right
+
+        # if right child is a not leaf
+
+        if !delete_node_right.right.nil? && !delete_node_right.left.nil?
+
+          successor_parent = nil
+
+          until successor.left.nil?
+
+            successor_parent = successor
+
+            successor = successor.left
+
+          end
+
+          # after getting successor and its parent, set parent left child to nil
+
+          successor_parent.left = nil
+
+        end
+
+        # set successor's left and right child
+
+        successor.left = delete_node_left
+
+        #   successor.right = delete_node_right
+
+        successor.right = delete_node_right == successor ? nil : delete_node_right
+
+        # if node not root, then set parent of node's child to be successor
+
+        unless node == root
+
+          delete_node_parent.left = successor if delete_node_parent.left == node
+
+          delete_node_parent.right = successor if delete_node_parent.right == node
+
+        end
+
+        self.root = successor if node == root
+
+        break
+
+      end
+
+      delete_node_parent = delete_node
+
+      delete_node = node > delete_node ? delete_node.right : delete_node.left
+    end
   end
 end
 
